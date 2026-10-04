@@ -1,0 +1,29 @@
+{
+  "name": "nxtwave-mern-growth-engine",
+  "version": "1.0.0",
+  "description": "NxtWave Growth Challenge Round 1 - Full MERN Stack Implementation",
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm start",
+    "server:dev": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "client:build": "cd client && npm run build",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "mern",
+    "nxtwave",
+    "growth-challenge",
+    "react",
+    "mongodb",
+    "express",
+    "nodejs"
+  ],
+  "author": "NxtWave Growth Intern Candidate",
+  "license": "ISC"
+}

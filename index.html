@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NxtWave AI Workshop | Build & Deploy an AI Agent in 60 Minutes</title>
+  <meta name="description" content="Free hands-on masterclass for final-year engineering students. Evaluate your AI placement readiness with a 6-question engineering diagnostic and build DevLens AI live for your resume.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050508;
+      --bg-card: rgba(13, 14, 22, 0.85);
+      --bg-card-hover: rgba(20, 22, 34, 0.95);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(99, 102, 241, 0.6);
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --cyan: #06b6d4;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; color-scheme: dark; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.14) 0%, transparent 60%),
+        radial-gradient(circle at 85% 30%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+    .wrap-sm { max-width: 620px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+    
+    /* NAV */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      background: rgba(5, 5, 8, 0.85);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; cursor: pointer; }
+    .brand-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, #4f46e5, #6366f1); display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-weight: 700; font-size: 14px; color: #fff;
+    }
+    .brand-title { font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 6px; }
+    .brand-pill {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 700;
+      background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.2);
+      padding: 2px 6px; border-radius: 4px; color: #a5b4fc;
+    }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .ticker {
+      display: flex; align-items: center; gap: 6px; font-family: var(--font-mono);
+      font-size: 11px; padding: 4px 10px; border-radius: 100px;
+      background: rgba(16, 185, 129, 0.08); border: 1px solid rgba(16, 185, 129, 0.2); color: #34d399;
+    }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; animation: pulse 2s infinite; }
+    .tab-btn {
+      font-family: var(--font-sans); font-size: 12px; font-weight: 600;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.03); color: var(--text-muted); cursor: pointer; transition: all 0.2s;
+    }
+    .tab-btn:hover { color: #fff; border-color: rgba(255, 255, 255, 0.16); }
+    .tab-btn.active { background: rgba(79, 70, 229, 0.15); border-color: var(--primary); color: #fff; }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 12px 22px; border-radius: 10px; font-family: inherit; font-size: 13px; font-weight: 600;
+      cursor: pointer; border: none; text-decoration: none; transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%); color: #fff;
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.35), inset 0 1px 0 rgba(255,255,255,0.2);
+    }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(79, 70, 229, 0.45); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border); color: var(--text); }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.18); }
+    .btn-full { width: 100%; }
+
+    /* CARDS */
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; transition: all 0.2s; backdrop-filter: blur(12px);
+    }
+
+    /* CODE CHIP */
+    .chip {
+      font-family: var(--font-mono); font-size: 11px;
+      background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+      padding: 2px 7px; border-radius: 5px; color: #a5b4fc;
+    }
+
+    /* TERMINAL */
+    .term {
+      background: #090a10; border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; font-family: var(--font-mono); font-size: 12px; text-align: left;
+      position: relative;
+    }
+    .term-head {
+      background: #06070b; padding: 10px 14px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .term-dots { display: flex; gap: 6px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: #262936; }
+    .term-body { padding: 18px; color: #94a3b8; line-height: 1.7; min-height: 180px; }
+    .term-body .c-white { color: #f8fafc; }
+    .term-body .c-indigo { color: #818cf8; }
+    .term-body .c-cyan { color: #22d3ee; }
+    .term-body .c-emerald { color: #34d399; }
+    .term-body .c-amber { color: #fbbf24; }
+
+    /* SCREENS */
+    .view { display: none; }
+    .view.active { display: block; }
+
+    /* HERO */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-mono);
+      font-size: 11px; padding: 4px 12px; border-radius: 100px;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border); color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .hero-h1 {
+      font-size: clamp(2.1rem, 4.8vw, 3.5rem); font-weight: 800; line-height: 1.14;
+      letter-spacing: -0.025em; margin-bottom: 16px;
+    }
+    .hero-sub {
+      font-size: 15px; color: var(--text-muted); max-width: 580px; margin: 0 auto 30px;
+      line-height: 1.6;
+    }
+    .stat-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+      margin: 40px auto 0; text-align: left;
+    }
+    @media(max-width: 640px) { .stat-strip { grid-template-columns: repeat(2, 1fr); } }
+    .stat-box { background: var(--bg-card); border: 1px solid var(--border); padding: 14px; border-radius: 12px; }
+    .stat-n { font-family: var(--font-mono); font-size: 18px; font-weight: 700; color: #fff; }
+    .stat-l { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+
+    /* TICKET PASS */
+    .ticket-pass {
+      background: linear-gradient(135deg, rgba(17, 19, 32, 0.95), rgba(9, 10, 16, 0.95));
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 18px; padding: 24px; text-align: left; position: relative; overflow: hidden;
+      box-shadow: 0 16px 36px -10px rgba(0,0,0,0.8), 0 0 24px rgba(79, 70, 229, 0.12);
+    }
+    .ticket-pass::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, 0.02) 45%, rgba(255, 255, 255, 0.05) 50%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* QUIZ */
+    .q-step-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .q-cat { font-family: var(--font-mono); font-size: 11px; color: #818cf8; background: rgba(79, 70, 229, 0.1); border: 1px solid rgba(79, 70, 229, 0.2); padding: 2px 8px; border-radius: 4px; }
+    .prog-track { width: 100%; height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; margin-bottom: 24px; }
+    .prog-fill { height: 100%; background: var(--primary); transition: width 0.3s; }
+    .q-title { font-size: 18px; font-weight: 700; line-height: 1.35; margin-bottom: 10px; }
+    .q-ctx { font-size: 12px; color: var(--text-muted); background: rgba(255, 255, 255, 0.02); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 20px; }
+    .opts { display: flex; flex-direction: column; gap: 10px; }
+    .opt-btn {
+      text-align: left; padding: 14px 16px; border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); color: inherit;
+      cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+    }
+    .opt-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.18); }
+    .opt-title { font-size: 13px; font-weight: 600; color: #fff; }
+    .opt-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .opt-badge { font-family: var(--font-mono); font-size: 10px; padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); background: rgba(255,255,255,0.04); color: var(--text-muted); shrink-0; }
+    
+    /* SCALE */
+    .scale-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 16px 0; }
+    .scale-card {
+      background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 12px 8px;
+      border-radius: 10px; text-align: center; cursor: pointer; transition: all 0.15s; color: inherit;
+    }
+    .scale-card:hover { border-color: var(--primary); background: rgba(79, 70, 229, 0.08); }
+    .scale-n { font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #818cf8; margin-bottom: 4px; }
+    .scale-t { font-size: 11px; font-weight: 600; color: #fff; }
+    .scale-d { font-size: 9px; color: var(--text-muted); margin-top: 2px; line-height: 1.2; }
+
+    /* REPORT */
+    .domain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 20px 0; }
+    @media(max-width: 600px) { .domain-grid { grid-template-columns: 1fr; } }
+    .domain-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 10px; padding: 12px; }
+    .domain-top { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-bottom: 6px; }
+    .d-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 100px; overflow: hidden; }
+    .d-fill { height: 100%; background: var(--primary); }
+
+    /* FORM */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 6px; }
+    .form-input {
+      width: 100%; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px 14px; font-size: 13px; color: #fff; outline: none; transition: border 0.15s;
+    }
+    .form-input:focus { border-color: var(--primary); }
+    .suggest-box { max-height: 140px; overflow-y: auto; background: #0c0d16; border: 1px solid var(--border); border-radius: 8px; margin-top: 4px; }
+    .suggest-item { padding: 8px 12px; font-size: 12px; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .suggest-item:hover { background: rgba(79, 70, 229, 0.15); color: #fff; }
+
+    /* MILESTONES */
+    .mile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 16px 0; }
+    @media(max-width: 600px) { .mile-grid { grid-template-columns: 1fr; } }
+    .mile-box { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); padding: 12px; border-radius: 10px; text-align: left; }
+    .mile-box.unlocked { border-color: rgba(16, 185, 129, 0.3); background: rgba(16, 185, 129, 0.05); }
+
+    /* FAQ */
+    .faq-item { border: 1px solid var(--border); background: rgba(255, 255, 255, 0.02); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+    .faq-q { padding: 14px; font-size: 13px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .faq-a { padding: 0 14px 14px; font-size: 12px; color: var(--text-muted); line-height: 1.6; border-top: 1px solid var(--border); padding-top: 10px; }
+
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="nav">
+    <div class="brand" onclick="switchView('hero')">
+      <div class="brand-icon">&gt;_</div>
+      <div>
+        <div class="brand-title">
+          <span>NxtWave</span>
+          <span class="brand-pill">AI LABS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <div class="ticker">
+        <span class="pulse-dot"></span>
+        <span id="seats-text">158 Seats Remaining</span>
+      </div>
+      <button id="tab-workshop" class="tab-btn active" onclick="switchView('hero')">Workshop</button>
+      <button id="tab-admin" class="tab-btn" onclick="switchView('admin')">Growth Console</button>
+    </div>
+  </nav>
+
+  <!-- VIEW 1: HERO -->
+  <section id="view-hero" class="view active">
+    <div class="wrap" style="padding-top: 50px; padding-bottom: 60px; text-align: center;">
+      <div class="hero-badge">
+        <span>● FREE 60-MIN MASTERCLASS FOR 2025 BATCH</span>
+      </div>
+
+      <h1 class="hero-h1">
+        Build & Deploy a Production AI Agent to GitHub in <span style="color: #818cf8;">60 Minutes</span>
+      </h1>
+
+      <p class="hero-sub">
+        94% of final-year engineering resumes feature identical CRUD clones. In this hands-on workshop, you will code and deploy <strong>DevLens AI</strong> — a real-time GitHub PR code review agent with streaming tokens and public Vercel hosting.
+      </p>
+
+      <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 36px;">
+        <button class="btn btn-primary" onclick="startQuiz()">
+          <span>Take 60-Sec AI Readiness Quiz</span>
+          <span>→</span>
+        </button>
+        <button class="btn btn-secondary" onclick="directRegister()">
+          <span>Direct Registration</span>
+        </button>
+      </div>
+
+      <!-- STAT STRIP -->
+      <div class="stat-strip">
+        <div class="stat-box">
+          <div class="stat-n" id="stat-reg-count">342 / 500</div>
+          <div class="stat-l">Students Registered</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-n" style="color: #34d399;">100% Free</div>
+          <div class="stat-l">Sponsored by NxtWave</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-n" style="color: #22d3ee;">60 Mins</div>
+          <div class="stat-l">Hands-On Code & Deploy</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-n" style="color: #fbbf24;">48h Left</div>
+          <div class="stat-l">Registration Closing Soon</div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE TERMINAL PLAYGROUND -->
+      <div style="margin-top: 48px;">
+        <div class="term">
+          <div class="term-head">
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <div class="term-dots">
+                <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+              </div>
+              <span style="color: #64748b; font-size: 11px;">devlens-ai // interactive-preview.ts</span>
+            </div>
+            <button onclick="runInteractiveDemo()" id="btn-run-demo" style="background: rgba(79, 70, 229, 0.2); border: 1px solid rgba(79, 70, 229, 0.4); color: #a5b4fc; font-family: var(--font-mono); font-size: 11px; padding: 4px 10px; border-radius: 6px; cursor: pointer;">
+              ▶ Simulate Live Agent
+            </button>
+          </div>
+          <div class="term-body" id="term-demo-body">
+            <div><span class="c-indigo">const</span> agent = <span class="c-indigo">new</span> DevLensAgent({</div>
+            <div style="padding-left: 16px;">model: <span class="c-amber">'gemini-1.5-flash'</span>,</div>
+            <div style="padding-left: 16px;">streaming: <span class="c-cyan">true</span>, <span style="color: #64748b;">// Server-Sent Events token stream</span></div>
+            <div style="padding-left: 16px;">schema: <span class="c-cyan">PullRequestReviewSchema</span></div>
+            <div>});</div>
+            <div style="color: #64748b; font-size: 11px; margin-top: 10px;">
+              Click <strong style="color: #818cf8;">[▶ Simulate Live Agent]</strong> above to preview the real-time code audit output.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WHAT YOU WALK AWAY WITH -->
+      <div style="margin-top: 60px; text-align: left;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: #818cf8; margin-bottom: 6px;">CONCRETE PROOF OF WORK</div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">What You Walk Away With In 60 Minutes</h2>
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">1. Live Hosted Vercel Application</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Public testable URL for ATS screeners and placement recruiters.</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">2. Clean Public GitHub Repository</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Verifiable commits, architecture diagrams, and clean code documentation.</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">3. Placement Interview Defense Playbook</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Model answers to the top 5 questions interviewers will ask about this project.</div>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <div style="font-size: 13px; font-weight: 700; color: #fff;">4. Official NxtWave Certificate</div>
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Verified credential validating your hands-on deployment for LinkedIn.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AGENDA -->
+      <div style="margin-top: 60px; text-align: left;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: #818cf8; margin-bottom: 6px;">CURRICULUM BREAKDOWN</div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">60-Minute Minute-by-Minute Masterclass Agenda</h2>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div class="card" style="padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span class="chip" style="color: #818cf8;">00:00 - 00:10</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">The 2025 Placement Shift</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Why recruiters downrank generic clones and how AI project proof bypasses ATS screening.</div>
+            </div>
+          </div>
+          <div class="card" style="padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span class="chip" style="color: #818cf8;">00:10 - 00:25</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">System Architecture & Streaming</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Setting up structured JSON schemas, handling LLM response latency, and Server-Sent Events (SSE).</div>
+            </div>
+          </div>
+          <div class="card" style="padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span class="chip" style="color: #818cf8;">00:25 - 00:45</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Live Code-Along: DevLens AI</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Writing the full-stack GitHub PR analysis agent using modern React and the Gemini Flash API.</div>
+            </div>
+          </div>
+          <div class="card" style="padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span class="chip" style="color: #818cf8;">00:45 - 00:55</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">1-Click Vercel Deployment</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Deploying the working app live to a public URL and documenting architectural specs on GitHub.</div>
+            </div>
+          </div>
+          <div class="card" style="padding: 14px 18px; display: flex; gap: 14px; align-items: flex-start;">
+            <span class="chip" style="color: #818cf8;">00:55 - 01:00</span>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">Placement Defense Playbook</div>
+              <div style="font-size: 12px; color: var(--text-muted);">5 specific technical questions interviewers will ask about this project and exact answers to give.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQS -->
+      <div style="margin-top: 60px; text-align: left;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: #818cf8; margin-bottom: 6px;">FREQUENTLY ASKED QUESTIONS</div>
+        <h2 style="font-size: 22px; font-weight: 700; margin-bottom: 16px;">Everything You Need To Know</h2>
+        
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Do I need paid AI API credits or a high-end GPU laptop?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-a" style="display: none;">
+            No. We provide free starter API keys and cloud deployment templates. Any standard laptop with a web browser and internet connection is 100% sufficient.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Is 60 minutes realistically enough time to build and deploy?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-a" style="display: none;">
+            Yes. You receive a pre-configured starter boilerplate. In the 60 minutes, you write the core AI reasoning and streaming logic, connect the API, and deploy live to Vercel.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Will I get verifiable proof for my resume and LinkedIn?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-a" style="display: none;">
+            Yes. You walk away with: 1) A public GitHub repository with your commits, 2) A live hosted web URL recruiters can test, and 3) An official NxtWave Certificate of Participation.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            <span>Is this workshop really 100% free?</span>
+            <span>+</span>
+          </div>
+          <div class="faq-a" style="display: none;">
+            Yes. NxtWave sponsors this hands-on workshop specifically to help final-year engineering students bridge the industry AI skills gap ahead of the 2025 campus hiring season.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 2: QUIZ -->
+  <section id="view-quiz" class="view">
+    <div class="wrap-sm" style="padding-top: 40px; padding-bottom: 60px;">
+      <div class="q-step-row">
+        <button class="tab-btn" onclick="prevQuestion()" id="quiz-back-btn">← Back</button>
+        <span class="q-cat" id="q-cat-tag">API & System Latency</span>
+        <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted);" id="q-progress-text">1 / 6</span>
+      </div>
+
+      <div class="prog-track">
+        <div class="prog-fill" id="q-prog-bar" style="width: 16.6%;"></div>
+      </div>
+
+      <div class="card" id="q-card">
+        <div style="font-family: var(--font-mono); font-size: 10px; color: #818cf8; margin-bottom: 6px;" id="q-sub-tag">QUESTION 1 OF 6</div>
+        <h2 class="q-title" id="q-title">Question prompt here</h2>
+        <div class="q-ctx" id="q-ctx">Context info here</div>
+
+        <div class="opts" id="q-opts-container">
+          <!-- Populated by JS -->
+        </div>
+
+        <div id="q-scale-container" style="display: none;">
+          <div class="scale-grid">
+            <div class="scale-card" onclick="selectScale(1)">
+              <div class="scale-n">1/5</div>
+              <div class="scale-t">Unprepared</div>
+              <div class="scale-d">Will likely stumble</div>
+            </div>
+            <div class="scale-card" onclick="selectScale(2)">
+              <div class="scale-n">2/5</div>
+              <div class="scale-t">Theory Only</div>
+              <div class="scale-d">No code proof</div>
+            </div>
+            <div class="scale-card" onclick="selectScale(3)">
+              <div class="scale-n">3/5</div>
+              <div class="scale-t">Average</div>
+              <div class="scale-d">Basic prompts</div>
+            </div>
+            <div class="scale-card" onclick="selectScale(4)">
+              <div class="scale-n">4/5</div>
+              <div class="scale-t">Competent</div>
+              <div class="scale-d">Know latency & RAG</div>
+            </div>
+            <div class="scale-card" onclick="selectScale(5)">
+              <div class="scale-n">5/5</div>
+              <div class="scale-t">Battle-Tested</div>
+              <div class="scale-d">Interview ready</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 3: SCANNING / CALCULATING -->
+  <section id="view-calculating" class="view">
+    <div class="wrap-sm" style="padding-top: 80px; padding-bottom: 80px;">
+      <div class="term" style="max-width: 440px; margin: 0 auto;">
+        <div class="term-head">
+          <div class="term-dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          <span style="font-size: 11px; color: #818cf8;">synthesizing-benchmark // v2.4</span>
+        </div>
+        <div class="term-body" style="padding: 24px;">
+          <div style="font-weight: 700; color: #fff; margin-bottom: 14px;">Benchmarking Candidate Profile...</div>
+          <div style="font-size: 11px; display: flex; flex-direction: column; gap: 8px;">
+            <div id="step-1" style="color: #64748b;">[1/3] Benchmarking LLM API & Latency handling</div>
+            <div id="step-2" style="color: #64748b;">[2/3] Evaluating Vector RAG & Schema reliability</div>
+            <div id="step-3" style="color: #64748b;">[3/3] Generating Placement Gap Analysis & Action Plan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 4: RESULT REPORT -->
+  <section id="view-result" class="view">
+    <div class="wrap" style="padding-top: 40px; padding-bottom: 60px;">
+      <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 16px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #818cf8;">ASSESSMENT REPORT • 2025 PLACEMENT CYCLE</div>
+            <h2 style="font-size: 22px; font-weight: 700;">Readiness Band: <span id="res-band" style="color: #818cf8;">Needs Practical Upgrade</span></h2>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-family: var(--font-mono); font-size: 32px; font-weight: 800;"><span id="res-score">68</span><span style="font-size: 14px; color: var(--text-muted);">/100</span></div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: var(--text-muted);">BENCHMARK SCORE</div>
+          </div>
+        </div>
+
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">DOMAIN COMPETENCY ANALYSIS</div>
+        <div class="domain-grid">
+          <div class="domain-box">
+            <div class="domain-top"><span>API & Real-Time Streaming</span><span id="score-integ" class="chip">16/25</span></div>
+            <div class="d-bar"><div class="d-fill" id="bar-integ" style="width: 64%;"></div></div>
+          </div>
+          <div class="domain-box">
+            <div class="domain-top"><span>Vector Systems & RAG</span><span id="score-rag" class="chip">14/25</span></div>
+            <div class="d-bar"><div class="d-fill" id="bar-rag" style="width: 56%; background: #06b6d4;"></div></div>
+          </div>
+          <div class="domain-box">
+            <div class="domain-top"><span>Production Architecture</span><span id="score-arch" class="chip">18/25</span></div>
+            <div class="d-bar"><div class="d-fill" id="bar-arch" style="width: 72%; background: #f59e0b;"></div></div>
+          </div>
+          <div class="domain-box">
+            <div class="domain-top"><span>Placement Defense & Cost</span><span id="score-def" class="chip">16/25</span></div>
+            <div class="d-bar"><div class="d-fill" id="bar-def" style="width: 64%; background: #10b981;"></div></div>
+          </div>
+        </div>
+
+        <div style="background: rgba(245, 158, 11, 0.08); border: 1px solid rgba(245, 158, 11, 0.2); padding: 14px; border-radius: 8px; font-size: 12px; color: #fde68a; margin-bottom: 20px;">
+          <strong>Recruiter Risk Detected:</strong> Candidates presenting generic CRUD clones face high rejection rates in 2025 technical screenings. Tier-1 product firms specifically require working AI applications with verifiable GitHub commits and live URLs.
+        </div>
+
+        <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-primary" style="flex: 1;" onclick="proceedToRegister()">
+            <span>Reserve Free Seat (Attach Score)</span>
+            <span>→</span>
+          </button>
+          <button class="btn btn-secondary" onclick="startQuiz()">
+            <span>Retake Diagnostic</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 5: REGISTER -->
+  <section id="view-register" class="view">
+    <div class="wrap-sm" style="padding-top: 40px; padding-bottom: 60px;">
+      <button class="tab-btn" style="margin-bottom: 16px;" onclick="switchView('hero')">← Back to Overview</button>
+
+      <div class="card">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 4px;">Confirm Workshop Seat</h2>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">
+          Limited to 500 final-year engineering students. Google Meet link and starter repo sent via WhatsApp.
+        </p>
+
+        <form id="reg-form" onsubmit="handleRegisterSubmit(event)">
+          <div class="form-group">
+            <label class="form-label">FULL NAME *</label>
+            <input type="text" id="in-name" class="form-input" required placeholder="e.g. Rahul Sharma">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">COLLEGE / PERSONAL EMAIL *</label>
+            <input type="email" id="in-email" class="form-input" required placeholder="e.g. rahul@college.ac.in">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">WHATSAPP NUMBER (FOR WORKSHOP ACCESS) *</label>
+            <input type="tel" id="in-phone" class="form-input" required placeholder="+91 98765 43210">
+          </div>
+
+          <div class="form-group" style="position: relative;">
+            <label class="form-label">ENGINEERING COLLEGE *</label>
+            <input type="text" id="in-college" class="form-input" required placeholder="Search or type college name..." oninput="handleCollegeInput(this.value)">
+            <div id="college-suggest" class="suggest-box" style="display: none;"></div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+            <div>
+              <label class="form-label">BRANCH</label>
+              <select id="in-branch" class="form-input">
+                <option value="Computer Science / IT">Computer Science / IT</option>
+                <option value="AI & Data Science">AI & Data Science</option>
+                <option value="ECE / EEE">ECE / EEE</option>
+                <option value="Mechanical / Civil">Mechanical / Civil</option>
+                <option value="Other Engineering">Other Engineering</option>
+              </select>
+            </div>
+            <div>
+              <label class="form-label">BATCH YEAR</label>
+              <select id="in-year" class="form-input">
+                <option value="2025 (Final Year)">2025 (Final Year)</option>
+                <option value="2026 (Pre-Final Year)">2026 (Pre-Final Year)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">FRIEND'S REFERRAL CODE (OPTIONAL)</label>
+            <input type="text" id="in-ref" class="form-input" style="font-family: var(--font-mono); color: #818cf8;" placeholder="e.g. NXT-SAIV-8821">
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" style="padding: 14px;">
+            <span>Lock In Free Workshop Seat (100% Free)</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 6: HUB -->
+  <section id="view-hub" class="view">
+    <div class="wrap-sm" style="padding-top: 40px; padding-bottom: 60px; text-align: center;">
+      <!-- TICKET PASS -->
+      <div class="ticket-pass" style="margin-bottom: 24px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 12px;">
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 10px; color: #818cf8;">OFFICIAL ADMISSION PASS</div>
+            <h2 style="font-size: 20px; font-weight: 800; color: #fff;">Seat Confirmed: <span id="hub-name">Engineer</span></h2>
+          </div>
+          <span class="chip" style="color: #34d399;">● PASS #<span id="hub-code">NXT-DEV-2025</span></span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 11px; margin-bottom: 14px;">
+          <div><span style="color: var(--text-dim);">DATE:</span> Saturday 7:00 PM IST</div>
+          <div><span style="color: var(--text-dim);">FORMAT:</span> Google Meet Live</div>
+          <div><span style="color: var(--text-dim);">WHATSAPP:</span> <span id="hub-phone" style="color: #34d399;">Sent</span></div>
+          <div><span style="color: var(--text-dim);">SEAT:</span> 100% Free Sponsored</div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border);">
+          <span style="font-size: 11px; color: var(--text-muted);">Starter repository will be sent before start time.</span>
+          <button class="btn btn-secondary" style="font-size: 11px; padding: 6px 12px;" onclick="addToCalendar()">Add to Calendar</button>
+        </div>
+      </div>
+
+      <!-- REFERRAL UPGRADES -->
+      <div class="card" style="text-align: left; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+          <span style="font-family: var(--font-mono); font-size: 11px; color: #818cf8; font-weight: 700;">PEER PASS & UPGRADES</span>
+          <span class="chip" id="hub-count">0/5 Joined</span>
+        </div>
+        <p style="font-size: 12px; color: var(--text-muted);">
+          Invite batchmates from your college. When they register, both of you unlock developer upgrades:
+        </p>
+
+        <div class="mile-grid">
+          <div class="mile-box" id="mile-1">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #34d399; font-weight: 700;">1 Friend</div>
+            <div style="font-size: 12px; font-weight: 600; color: #fff; margin: 2px 0;">AI Prompt Vault</div>
+            <div style="font-size: 10px; color: var(--text-muted);">50+ production prompts & code templates</div>
+          </div>
+          <div class="mile-box" id="mile-3">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #22d3ee; font-weight: 700;">3 Friends</div>
+            <div style="font-size: 12px; font-weight: 600; color: #fff; margin: 2px 0;">VIP Doubt Room</div>
+            <div style="font-size: 10px; color: var(--text-muted);">Post-session live Q&A with instructor</div>
+          </div>
+          <div class="mile-box" id="mile-5">
+            <div style="font-family: var(--font-mono); font-size: 11px; color: #818cf8; font-weight: 700;">5 Friends</div>
+            <div style="font-size: 12px; font-weight: 600; color: #fff; margin: 2px 0;">Resume Review</div>
+            <div style="font-size: 10px; color: var(--text-muted);">1-on-1 AI portfolio audit for placements</div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: 8px; background: #08080f; padding: 6px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px;">
+          <input type="text" id="hub-link-input" readonly style="flex: 1; background: transparent; border: none; font-family: var(--font-mono); font-size: 11px; color: #a5b4fc; outline: none; padding-left: 8px;">
+          <button class="btn btn-primary" style="padding: 6px 14px; font-size: 11px;" onclick="copyReferralLink()">Copy Link</button>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <button class="btn" style="background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.25); color: #34d399;" onclick="shareWhatsApp()">
+            Share to WhatsApp
+          </button>
+          <button class="btn" style="background: rgba(79, 70, 229, 0.12); border: 1px solid rgba(79, 70, 229, 0.25); color: #818cf8;" onclick="shareLinkedIn()">
+            Share on LinkedIn
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VIEW 7: ADMIN CONSOLE -->
+  <section id="view-admin" class="view">
+    <div class="wrap" style="padding-top: 40px; padding-bottom: 60px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 16px; margin-bottom: 24px;">
+        <div>
+          <span class="chip" style="color: #818cf8;">WORKSHOP ACQUISITION CONSOLE</span>
+          <h1 style="font-size: 24px; font-weight: 800; margin-top: 4px;">Enrollment & Growth Analytics</h1>
+        </div>
+        <button class="btn btn-primary" onclick="exportCSV()">Export Registrations (CSV)</button>
+      </div>
+
+      <!-- KPI METRIC STRIP -->
+      <div class="stat-strip" style="margin-top: 0; margin-bottom: 24px;">
+        <div class="stat-box">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">
+            <span>TARGET CAPACITY</span><span style="color: #818cf8;">Day 4/7</span>
+          </div>
+          <div class="stat-n">342 <span style="font-size: 12px; color: var(--text-muted);">/ 500</span></div>
+          <div style="font-size: 11px; color: #34d399; margin-top: 4px;">68.4% achieved (+85/day)</div>
+        </div>
+
+        <div class="stat-box">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">
+            <span>BUDGET</span><span style="color: #34d399;">CAP: ₹2,000</span>
+          </div>
+          <div class="stat-n" style="color: #34d399;">₹1,450</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Blended CAC: ₹4.24</div>
+        </div>
+
+        <div class="stat-box">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">
+            <span>VIRAL K-FACTOR</span><span style="color: #22d3ee;">ORGANIC</span>
+          </div>
+          <div class="stat-n" style="color: #22d3ee;">K = 0.42</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">96 Peer Signups</div>
+        </div>
+
+        <div class="stat-box">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">
+            <span>EST. SHOW-UP</span><span style="color: #fbbf24;">HIGH INTENT</span>
+          </div>
+          <div class="stat-n" style="color: #fbbf24;">86.4%</div>
+          <div style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">~430+ Live Attendees</div>
+        </div>
+      </div>
+
+      <!-- FUNNEL & CHANNELS -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+        <div class="card">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #818cf8; margin-bottom: 12px;">ACQUISITION FUNNEL (23.1% END-TO-END)</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-family: var(--font-mono);">
+            <div style="display: flex; justify-content: space-between;"><span>1. Page Visits</span><strong>1,480 (100%)</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span>2. Quiz Started</span><strong>1,220 (82.4%)</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span>3. Quiz Completed</span><strong>1,045 (85.6%)</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span>4. Form Viewed</span><strong>860 (82.3%)</strong></div>
+            <div style="display: flex; justify-content: space-between; color: #818cf8;"><span>5. Registered</span><strong>342 (39.8%)</strong></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-family: var(--font-mono); font-size: 11px; color: #34d399; margin-bottom: 12px;">CHANNEL ATTRIBUTION BREAKDOWN</div>
+          <div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; font-family: var(--font-mono);">
+            <div style="display: flex; justify-content: space-between;"><span>Campus Tech Reps (WhatsApp)</span><strong>48% (164)</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span>Viral Peer Referrals</span><strong>28% (96)</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span>LinkedIn Placement Posts</span><strong>15% (51)</strong></div>
+            <div style="display: flex; justify-content: space-between;"><span>Reddit & Dev Discords</span><strong>9% (31)</strong></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    const QUESTIONS = [
+      {
+        id: 'q1',
+        category: 'API & Real-Time UX',
+        tag: 'Question 1 of 6 • System Latency',
+        question: 'How do you handle LLM response latency (typically 3–8s) in an interactive web application?',
+        context: 'Recruiters test whether you understand real-time token streaming vs amateur blocking requests.',
+        options: [
+          { label: 'Wait for full response with a blocking loading spinner', sub: 'High drop-off rate; poor UX', tier: 'Basic', w: { integ: 8, rag: 5, arch: 5, def: 8 } },
+          { label: 'Only use ChatGPT in browser; have not integrated an API in code', sub: 'Zero API integration experience', tier: 'Zero Experience', w: { integ: 2, rag: 2, arch: 2, def: 4 } },
+          { label: 'Stream tokens via Server-Sent Events (SSE) for instant TTFT', sub: 'Modern production pattern', tier: 'Production', w: { integ: 22, rag: 16, arch: 20, def: 22 } },
+          { label: 'Async message queue (Redis/BullMQ) + WebSockets with optimistic state', sub: 'Enterprise-grade async pattern', tier: 'Advanced', w: { integ: 25, rag: 20, arch: 25, def: 25 } }
+        ]
+      },
+      {
+        id: 'q2',
+        category: 'Vector Systems & RAG',
+        tag: 'Question 2 of 6 • Information Retrieval',
+        question: 'In an interview, if asked how a RAG pipeline retrieves relevant context from 1,000 documents, what is your answer?',
+        context: 'RAG is the #1 asked topic in 2025 campus interviews for AI and backend engineering roles.',
+        options: [
+          { label: 'I am not familiar with RAG, Vector Databases, or Embeddings yet', sub: 'Critical placement knowledge gap', tier: 'Unfamiliar', w: { integ: 4, rag: 2, arch: 4, def: 5 } },
+          { label: 'Execute SQL LIKE or regex pattern matching on text stored in a traditional DB', sub: 'Fails to capture semantic meaning', tier: 'Conventional', w: { integ: 10, rag: 8, arch: 8, def: 8 } },
+          { label: 'Semantic chunking, high-dimensional vector embeddings, and Cosine Similarity', sub: 'Standard modern RAG architecture', tier: 'Production', w: { integ: 20, rag: 24, arch: 20, def: 22 } },
+          { label: 'Hybrid retrieval (BM25 sparse + dense embeddings) with cross-encoder reranking', sub: 'Industry gold standard RAG', tier: 'Advanced', w: { integ: 25, rag: 25, arch: 24, def: 25 } }
+        ]
+      },
+      {
+        id: 'q3',
+        category: 'Resume Differentiation',
+        tag: 'Question 3 of 6 • Capstone Differentiation',
+        question: 'What is currently the primary technical capstone project on your engineering resume?',
+        context: 'ATS screeners and recruiters automatically downrank generic cloned tutorial projects.',
+        options: [
+          { label: 'E-Commerce store, Netflix/Spotify clone, Weather app, or Todo task manager', sub: 'Identical to ~85% of other college applicant resumes', tier: 'High Risk', w: { integ: 6, rag: 5, arch: 6, def: 6 } },
+          { label: 'Standard MERN / Spring Boot CRUD portal without any AI integration', sub: 'Good basics, but lacks 2025 modern differentiation', tier: 'Standard', w: { integ: 12, rag: 8, arch: 14, def: 10 } },
+          { label: 'Basic LLM wrapper script (e.g. OpenAI prompt completion chatbot)', sub: 'Shows interest, but needs full-stack deployment', tier: 'Intermediate', w: { integ: 18, rag: 14, arch: 15, def: 16 } },
+          { label: 'Live hosted AI application / autonomous agent with real users & GitHub proof', sub: 'Top-tier portfolio candidate', tier: 'Top 5%', w: { integ: 25, rag: 22, arch: 25, def: 24 } }
+        ]
+      },
+      {
+        id: 'q4',
+        category: 'Reliability & Schema Safety',
+        tag: 'Question 4 of 6 • Structured Output',
+        question: 'How do you guarantee an LLM returns 100% valid JSON so your backend database doesn’t crash?',
+        context: 'Testing whether you know production structured output protocols vs naive prompt asking.',
+        options: [
+          { label: 'Include in prompt: "Respond ONLY with valid JSON"', sub: 'Fragile; breaks frequently in production', tier: 'Fragile', w: { integ: 8, rag: 7, arch: 6, def: 8 } },
+          { label: 'Try/catch JSON.parse() on the string with a basic retry loop if it fails', sub: 'Band-aid solution increasing token cost', tier: 'Workaround', w: { integ: 12, rag: 12, arch: 12, def: 14 } },
+          { label: 'Native Function/Tool Calling with strict JSON Schema / Pydantic validation', sub: 'Standard protocol used by OpenAI & Gemini APIs', tier: 'Production', w: { integ: 24, rag: 20, arch: 22, def: 24 } },
+          { label: 'Constrained decoding grammar (e.g. GBNF/Outlines) directly at sampling time', sub: 'Deep technical mastery of LLM decoding', tier: 'Advanced', w: { integ: 25, rag: 22, arch: 25, def: 25 } }
+        ]
+      },
+      {
+        id: 'q5',
+        category: 'Deployment & Proof of Work',
+        tag: 'Question 5 of 6 • GitHub & Live Hosting',
+        question: 'When a technical recruiter checks your GitHub link, what will they find?',
+        context: '90% of interview shortlists are decided by verified GitHub repositories and live links.',
+        options: [
+          { label: 'Only college lab assignments, empty readme files, or code strictly on localhost', sub: 'Recruiters cannot verify if your code actually works', tier: 'Needs Work', w: { integ: 5, rag: 4, arch: 5, def: 5 } },
+          { label: 'Forked tutorial repos without architectural diagrams or live demo URLs', sub: 'Lacks personal engineering ownership', tier: 'Basic', w: { integ: 11, rag: 9, arch: 10, def: 10 } },
+          { label: 'Public repo with live Vercel link, video walkthrough, and clear API docs', sub: 'Immediately distinguishes you in resume screens', tier: 'Production', w: { integ: 22, rag: 20, arch: 22, def: 22 } },
+          { label: 'Containerized (Docker), CI/CD GitHub Actions test pipeline, and architecture specs', sub: 'Demonstrates professional software maturity', tier: 'Top 3%', w: { integ: 25, rag: 23, arch: 25, def: 25 } }
+        ]
+      },
+      {
+        id: 'q6',
+        category: 'Interview Defense',
+        tag: 'Question 6 of 6 • Placement Readiness',
+        question: 'How prepared are you to explain token costs, hallucination safeguards, and prompt injection in a live technical interview?',
+        context: 'Senior tech interviewers specifically drill candidates on edge cases and failure modes.',
+        scale: true
+      }
+    ];
+
+    let currentQ = 0;
+    let quizAnswers = {};
+    let finalScore = 68;
+    let finalBand = 'Needs Practical Upgrade';
+    let currentStudent = null;
+
+    const COLLEGES = [
+      'JNTU College of Engineering, Hyderabad',
+      'Chaitanya Bharathi Institute of Technology (CBIT)',
+      'VNR Vignana Jyothi Institute of Engineering (VNR VJIET)',
+      'University College of Engineering, Osmania',
+      'Vasavi College of Engineering',
+      'SRM Institute of Science & Technology',
+      'Vellore Institute of Technology (VIT)',
+      'Anna University, Chennai',
+      'GRIET Hyderabad',
+      'BVRIT Hyderabad'
+    ];
+
+    function switchView(viewId) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const target = document.getElementById(`view-${viewId}`);
+      if (target) target.classList.add('active');
+
+      document.getElementById('tab-workshop').classList.toggle('active', viewId !== 'admin');
+      document.getElementById('tab-admin').classList.toggle('active', viewId === 'admin');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function runInteractiveDemo() {
+      const body = document.getElementById('term-demo-body');
+      const btn = document.getElementById('btn-run-demo');
+      btn.innerText = 'Auditing...';
+      btn.disabled = true;
+
+      const lines = [
+        '<div style="color: #f8fafc; padding-top: 6px;">$ devlens analyze --repo="nxtwave/auth-service" --pr=42</div>',
+        '<div style="color: #818cf8;">[•] Initializing Server-Sent Events stream (Gemini 1.5 Flash)...</div>',
+        '<div style="color: #22d3ee;">[✓] Parsed 3 file diffs (+142, -18 lines) in 180ms TTFT</div>',
+        '<div style="color: #fbbf24;">[⚠️ SECURITY ALERT] SQL Injection vulnerability detected in auth.ts:48</div>',
+        '<div style="color: #34d399;">[✓] Streamed automated remediation markdown to GitHub PR #42</div>',
+        '<div style="color: #c7d2fe; font-weight: bold;">[🚀 LIVE VERCEL DEPLOYMENT] https://devlens-ai.vercel.app</div>'
+      ];
+
+      body.innerHTML = `
+        <div><span class="c-indigo">const</span> agent = <span class="c-indigo">new</span> DevLensAgent({</div>
+        <div style="padding-left: 16px;">model: <span class="c-amber">'gemini-1.5-flash'</span>,</div>
+        <div style="padding-left: 16px;">streaming: <span class="c-cyan">true</span></div>
+        <div>});</div>
+      `;
+
+      lines.forEach((line, i) => {
+        setTimeout(() => {
+          body.innerHTML += line;
+        }, (i + 1) * 450);
+      });
+
+      setTimeout(() => {
+        btn.innerText = '▶ Simulate Live Agent';
+        btn.disabled = false;
+      }, 3200);
+    }
+
+    function startQuiz() {
+      currentQ = 0;
+      quizAnswers = {};
+      renderQuestion();
+      switchView('quiz');
+    }
+
+    function directRegister() {
+      switchView('register');
+    }
+
+    function renderQuestion() {
+      const q = QUESTIONS[currentQ];
+      document.getElementById('q-cat-tag').innerText = q.category;
+      document.getElementById('q-progress-text').innerText = `${currentQ + 1} / ${QUESTIONS.length}`;
+      document.getElementById('q-prog-bar').style.width = `${((currentQ + 1) / QUESTIONS.length) * 100}%`;
+      document.getElementById('q-sub-tag').innerText = q.tag.toUpperCase();
+      document.getElementById('q-title').innerText = q.question;
+      document.getElementById('q-ctx').innerText = q.context;
+
+      const optsCont = document.getElementById('q-opts-container');
+      const scaleCont = document.getElementById('q-scale-container');
+
+      if (q.scale) {
+        optsCont.style.display = 'none';
+        scaleCont.style.display = 'block';
+      } else {
+        optsCont.style.display = 'flex';
+        scaleCont.style.display = 'none';
+        optsCont.innerHTML = q.options.map((opt, i) => `
+          <button class="opt-btn" onclick="selectOption(${i})">
+            <div>
+              <div class="opt-title">${opt.label}</div>
+              <div class="opt-sub">${opt.sub}</div>
+            </div>
+            <span class="opt-badge">${opt.tier}</span>
+          </button>
+        `).join('');
+      }
+    }
+
+    function selectOption(idx) {
+      const q = QUESTIONS[currentQ];
+      quizAnswers[q.id] = q.options[idx];
+      nextQuestion();
+    }
+
+    function selectScale(val) {
+      quizAnswers['q6'] = {
+        label: `Level ${val}/5 Confidence`,
+        w: { integ: val * 5, rag: val * 5, arch: val * 5, def: val * 5 }
+      };
+      finishQuiz();
+    }
+
+    function nextQuestion() {
+      if (currentQ < QUESTIONS.length - 1) {
+        currentQ++;
+        renderQuestion();
+      } else {
+        finishQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (currentQ > 0) {
+        currentQ--;
+        renderQuestion();
+      } else {
+        switchView('hero');
+      }
+    }
+
+    function finishQuiz() {
+      switchView('calculating');
+      setTimeout(() => document.getElementById('step-1').style.color = '#34d399', 600);
+      setTimeout(() => document.getElementById('step-2').style.color = '#34d399', 1400);
+      setTimeout(() => document.getElementById('step-3').style.color = '#34d399', 2200);
+
+      setTimeout(() => {
+        let integ = 0, rag = 0, arch = 0, def = 0;
+        Object.values(quizAnswers).forEach(ans => {
+          if (ans && ans.w) {
+            integ += ans.w.integ;
+            rag += ans.w.rag;
+            arch += ans.w.arch;
+            def += ans.w.def;
+          }
+        });
+
+        const sInteg = Math.min(25, Math.round((integ / 150) * 25));
+        const sRag = Math.min(25, Math.round((rag / 150) * 25));
+        const sArch = Math.min(25, Math.round((arch / 150) * 25));
+        const sDef = Math.min(25, Math.round((def / 150) * 25));
+
+        finalScore = Math.min(96, Math.max(36, sInteg + sRag + sArch + sDef));
+
+        if (finalScore < 50) finalBand = 'High Rejection Risk';
+        else if (finalScore < 70) finalBand = 'Needs Practical Upgrade';
+        else if (finalScore < 85) finalBand = 'Intermediate Developer';
+        else finalBand = 'AI Placement Ready';
+
+        document.getElementById('res-score').innerText = finalScore;
+        document.getElementById('res-band').innerText = finalBand;
+
+        document.getElementById('score-integ').innerText = `${sInteg}/25`;
+        document.getElementById('score-rag').innerText = `${sRag}/25`;
+        document.getElementById('score-arch').innerText = `${sArch}/25`;
+        document.getElementById('score-def').innerText = `${sDef}/25`;
+
+        document.getElementById('bar-integ').style.width = `${(sInteg / 25) * 100}%`;
+        document.getElementById('bar-rag').style.width = `${(sRag / 25) * 100}%`;
+        document.getElementById('bar-arch').style.width = `${(sArch / 25) * 100}%`;
+        document.getElementById('bar-def').style.width = `${(sDef / 25) * 100}%`;
+
+        switchView('result');
+      }, 2900);
+    }
+
+    function proceedToRegister() {
+      switchView('register');
+    }
+
+    function handleCollegeInput(val) {
+      const box = document.getElementById('college-suggest');
+      if (val.length > 1) {
+        const matches = COLLEGES.filter(c => c.toLowerCase().includes(val.toLowerCase()));
+        if (matches.length > 0) {
+          box.style.display = 'block';
+          box.innerHTML = matches.map(c => `
+            <div class="suggest-item" onclick="chooseCollege('${c}')">${c}</div>
+          `).join('');
+          return;
+        }
+      }
+      box.style.display = 'none';
+    }
+
+    function chooseCollege(val) {
+      document.getElementById('in-college').value = val;
+      document.getElementById('college-suggest').style.display = 'none';
+    }
+
+    async function handleRegisterSubmit(e) {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('in-name').value,
+        email: document.getElementById('in-email').value,
+        phone: document.getElementById('in-phone').value,
+        college: document.getElementById('in-college').value,
+        branch: document.getElementById('in-branch').value,
+        graduationYear: document.getElementById('in-year').value,
+        referralCode: document.getElementById('in-ref').value,
+        score: finalScore,
+        scoreBand: finalBand
+      };
+
+      try {
+        const res = await fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        currentStudent = data.registration || {
+          name: payload.name,
+          phone: payload.phone,
+          referralCode: 'NXT-DEV-8821',
+          referralCount: 0
+        };
+      } catch (err) {
+        currentStudent = {
+          name: payload.name,
+          phone: payload.phone,
+          referralCode: 'NXT-DEV-' + Math.floor(1000 + Math.random() * 9000),
+          referralCount: 0
+        };
+      }
+
+      document.getElementById('hub-name').innerText = currentStudent.name || 'Engineer';
+      document.getElementById('hub-phone').innerText = currentStudent.phone || 'your number';
+      document.getElementById('hub-code').innerText = currentStudent.referralCode;
+      document.getElementById('hub-link-input').value = window.location.origin + '?ref=' + currentStudent.referralCode;
+
+      switchView('hub');
+    }
+
+    function copyReferralLink() {
+      const inp = document.getElementById('hub-link-input');
+      inp.select();
+      navigator.clipboard.writeText(inp.value);
+      alert('Referral link copied to clipboard!');
+    }
+
+    function shareWhatsApp() {
+      const link = document.getElementById('hub-link-input').value;
+      const text = encodeURIComponent(`Hey! I just checked my AI Placement Readiness score and booked my seat for NxtWave's live workshop: "Build Your First AI Project in 60 Minutes" 🚀\n\nIt is 100% free for final-year engineering students. We will build & deploy DevLens AI live for our resumes.\n\nReserve your seat here:\n${link}`);
+      window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+    }
+
+    function shareLinkedIn() {
+      const link = document.getElementById('hub-link-input').value;
+      window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(link)}`, '_blank');
+    }
+
+    function addToCalendar() {
+      const title = encodeURIComponent("NxtWave Workshop: Build Your First AI Project in 60 Minutes");
+      const details = encodeURIComponent("Live 60-Minute Masterclass: Build DevLens AI with streaming tokens and deploy to Vercel.");
+      const location = encodeURIComponent("Google Meet (Sent on WhatsApp)");
+      const now = new Date();
+      now.setDate(now.getDate() + 2);
+      const startIso = now.toISOString().replace(/-|:|\.\d\d\d/g, "");
+      const calUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&dates=${startIso}/${startIso}`;
+      window.open(calUrl, '_blank');
+    }
+
+    function toggleFaq(el) {
+      const a = el.nextElementSibling;
+      const span = el.querySelector('span:last-child');
+      if (a.style.display === 'none') {
+        a.style.display = 'block';
+        span.innerText = '−';
+      } else {
+        a.style.display = 'none';
+        span.innerText = '+';
+      }
+    }
+
+    function exportCSV() {
+      window.open('/api/admin/registrations', '_blank');
+    }
+  </script>
+</body>
+</html>
